@@ -1,0 +1,30 @@
+.Leaderboard {
+  padding: 5em;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  border: 2px solid #e9e9ec;
+}
+
+.Leaderboard-heading {
+  color: #888888;
+  font-weight: 400;
+}
+
+.Leaderboard-list {
+  padding: 0;
+  list-style: none;
+}
+
+.Leaderboard-list-item {
+  margin: 0.1em;
+  padding: 0.1em 0.75em;
+  min-width: 16em;
+  font-size: 1.25em;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  background-color: #cfd8dc;
+  color: #9da6a9;
+  font-weight: 600;
+}
