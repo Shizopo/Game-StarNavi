@@ -1,8 +1,12 @@
 const dataFetchService = async endpoint => {
-  const fetchUrl = `https://starnavi-frontend-test-task.herokuapp.com/${endpoint}`;
-  const fetchedData = await fetch(fetchUrl);
-  const parsedData = await fetchedData.json();
-  return parsedData;
+  try {
+    const fetchUrl = `https://starnavi-frontend-test-task.herokuapp.com/${endpoint}`;
+    const fetchedData = await fetch(fetchUrl);
+    const parsedData = await fetchedData.json();
+    return parsedData;
+  } catch (err) {
+    console.log("something went wrong ", err);
+  }
 };
 
 const fetchedData = endpoint => {

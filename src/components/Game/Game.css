@@ -1,0 +1,10 @@
+.Game {
+  height: 100%;
+  padding: 0;
+  display: flex;
+  /* flex: 1; */
+  flex-flow: column nowrap;
+  align-self: flex-start;
+  /* justify-content: center; */
+  border: 2px solid #e9e9ec;
+}
