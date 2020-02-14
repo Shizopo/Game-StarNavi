@@ -13,9 +13,17 @@ class ControlsContainer extends React.Component {
   async componentDidMount() {
     const endpoint = "game-settings";
     const gameModes = await fetchLeaderboard(endpoint);
-    this.setState({ gameModes, isLoading: false }, () =>
-      console.log("settings", this.state)
-    );
+    this.setState({ gameModes, isLoading: false });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.currentGameMode !== this.props.currentGameMode) {
+      const { getSettings } = this.props;
+      const { gameModes } = this.state;
+
+      getSettings(gameModes);
+    }
+    return;
   }
 
   renderGameModes = () => {

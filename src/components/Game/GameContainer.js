@@ -7,6 +7,7 @@ class GameContainer extends React.Component {
   state = {
     currentGameMode: "",
     userName: "",
+    gameSettings: {},
   };
 
   onInputChange = e => {
@@ -16,12 +17,21 @@ class GameContainer extends React.Component {
     this.setState({ [name]: value });
   };
 
+  getSettings = modes => {
+    const modeName = this.state.currentGameMode;
+    if (modeName) {
+      this.setState({ gameSettings: modes[modeName] });
+    }
+    return;
+  };
+
   render() {
     const { currentGameMode, userName } = this.state;
     return (
       <Game
         onInputChange={this.onInputChange}
         currentGameMode={currentGameMode}
+        getSettings={this.getSettings}
         userName={userName}
       />
     );
