@@ -20,12 +20,25 @@
 }
 
 .Controls-input_gameMode {
-  max-width: 10em;
+  min-width: 11em;
+  max-width: 14em;
   background-color: #cfd8dc;
 }
 
+/* .Controls-input_gameMode::after {
+  content: "";
+  top: 2em;
+  position: absolute;
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+} */
+
 .Controls-input_nameInput {
-  max-width: 8em;
+  max-width: 6em;
   background-color: #f3f3f3;
 }
 
@@ -34,30 +47,5 @@
   background-color: #7b8d93;
   color: #fff;
   text-transform: uppercase;
+  cursor: pointer;
 }
-
-.Controls-input_gameMode::after {
-  border: solid black;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-}
-/* .Leaderboard-list {
-    padding: 0;
-    list-style: none;
-  }
-  
-  .Leaderboard-list-item {
-    margin: 0.1em;
-    padding: 0.1em 0.75em;
-    min-width: 16em;
-    font-size: 1.25em;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    background-color: #cfd8dc;
-    color: #9da6a9;
-    font-weight: 600;
-  } */

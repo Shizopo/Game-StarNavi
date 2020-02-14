@@ -1,7 +1,13 @@
 import React from "react";
 
 const Controls = props => {
-  const { renderGameModes, onInputChange, currentGameMode, userName } = props;
+  const {
+    renderGameModes,
+    onInputChange,
+    currentGameMode,
+    userName,
+    startGame,
+  } = props;
   console.log(renderGameModes, onInputChange, currentGameMode);
   return (
     <div className="Controls">
@@ -11,6 +17,9 @@ const Controls = props => {
         value={currentGameMode}
         className="Controls-input Controls-input_gameMode"
       >
+        <option value="" disabled hidden>
+          Pick game mode
+        </option>
         {renderGameModes()}
       </select>
       <input
@@ -20,7 +29,15 @@ const Controls = props => {
         onChange={e => onInputChange(e)}
         value={userName}
       />
-      <button className="Controls-input Controls-input_playButton">Play</button>
+      <button
+        className="Controls-input Controls-input_playButton"
+        name="playButton"
+        type="button"
+        disabled={!currentGameMode ? true : false}
+        onClick={() => startGame()}
+      >
+        Play
+      </button>
     </div>
   );
 };

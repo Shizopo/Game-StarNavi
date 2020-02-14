@@ -31,7 +31,7 @@ class ControlsContainer extends React.Component {
     const gameModesArray = Object.keys(gameModes);
     console.log(gameModesArray);
     return gameModesArray.map((el, index) => (
-      <option value={el} key={index}>
+      <option value={el} key={index + 1}>
         {el}
       </option>
     ));
@@ -39,7 +39,7 @@ class ControlsContainer extends React.Component {
 
   render() {
     const { isLoading } = this.state;
-    const { onInputChange, currentGameMode, userName } = this.props;
+    const { onInputChange, currentGameMode, userName, startGame } = this.props;
     if (isLoading) {
       return <div>Loading...</div>;
     }
@@ -49,6 +49,7 @@ class ControlsContainer extends React.Component {
         onInputChange={onInputChange}
         currentGameMode={currentGameMode}
         userName={userName}
+        startGame={startGame}
       />
     );
   }

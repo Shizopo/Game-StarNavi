@@ -8,6 +8,7 @@ class GameContainer extends React.Component {
     currentGameMode: "",
     userName: "",
     gameSettings: {},
+    isStarted: false,
   };
 
   onInputChange = e => {
@@ -25,14 +26,31 @@ class GameContainer extends React.Component {
     return;
   };
 
+  startGame = () => {
+    this.setState({ isStarted: true }, () =>
+      console.log(
+        "The game is just started with ",
+        this.state.currentGameMode,
+        ", that means field size of ",
+        this.state.gameSettings.field,
+        " and ",
+        this.state.gameSettings.delay,
+        " delay."
+      )
+    );
+  };
+
   render() {
-    const { currentGameMode, userName } = this.state;
+    const { currentGameMode, userName, gameSettings, isStarted } = this.state;
     return (
       <Game
         onInputChange={this.onInputChange}
         currentGameMode={currentGameMode}
         getSettings={this.getSettings}
+        gameSettings={gameSettings}
         userName={userName}
+        startGame={this.startGame}
+        isStarted={isStarted}
       />
     );
   }

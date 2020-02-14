@@ -1,0 +1,24 @@
+.Board {
+  padding: 0 1.5em;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.Board-row {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.Board-row-cell {
+  width: 2em;
+  height: 2em;
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  cursor: pointer;
+}
+
+.WelcomeScreen {
+  font-weight: 600;
+}
