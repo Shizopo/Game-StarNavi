@@ -9,6 +9,7 @@ class GameContainer extends React.Component {
     userName: "",
     gameSettings: {},
     isStarted: false,
+    isCompTurn: false,
   };
 
   onInputChange = e => {

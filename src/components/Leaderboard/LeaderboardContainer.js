@@ -12,7 +12,6 @@ class LeaderboardContainer extends React.Component {
 
   async componentDidMount() {
     const endpoint = "winners";
-    console.log(this.state);
     const leaderboard = await fetchLeaderboard(endpoint);
     this.setState({ leaderboard, isLoading: false });
   }
