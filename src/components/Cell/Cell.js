@@ -1,14 +1,22 @@
 import React from "react";
 
 const Cell = props => {
-  const { id, isHighlighted, handleClick } = props;
-  let className = isHighlighted
-    ? "Board-row-cell_highlighted"
-    : "Board-row-cell";
+  const { id, isHighlighted, handleClick, isHit, isMissed } = props;
+  let className = () => {
+    if (isHighlighted) {
+      return "Board-row-cell_highlighted";
+    } else if (isHit) {
+      return "Board-row-cell_hit";
+    } else if (isMissed) {
+      return "Board-row-cell_missed";
+    } else {
+      return "Board-row-cell";
+    }
+  };
 
   return (
     <div
-      className={className}
+      className={className()}
       key={id}
       id={id}
       onClick={e => handleClick(e)}

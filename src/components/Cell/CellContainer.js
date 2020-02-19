@@ -3,39 +3,31 @@ import Cell from "./Cell";
 
 class CellContainer extends React.PureComponent {
   state = {
-    isClicked: false,
+    // isClicked: false,
     isMissed: false,
     isHit: false,
   };
 
-  handleClick = e => {
-    e.preventDefault();
-    const { id } = e.target;
-    const { isClicked, isHighlighted, isMissed, isHit } = this.state;
-    this.setState({ isClicked: !isClicked });
-    console.log("click handler", id);
-    if (isClicked === isHighlighted) {
-      this.setState({ isHit: !isHit }, () => console.log("good shot"));
-    } else if (isClicked !== isHighlighted) {
-      this.setState({ isMissed: !isMissed }, () => console.log("miss"));
-    }
-    this.setState({ clickedElement: e.target.id, isClicked: true }, () =>
-      console.log(this.state)
-    );
-  };
-
   render() {
-    const { id, isHighlighted } = this.props;
-    const { isClicked, isMissed, isHit } = this.state;
+    const {
+      row,
+      column,
+      isHighlighted,
+      isHit,
+      isMissed,
+    } = this.props.fieldcell;
+
+    const { handleClick } = this.props;
+
+    let id = row + column;
 
     return (
       <Cell
         id={id}
         isHighlighted={isHighlighted}
-        isClicked={isClicked}
-        isMissed={isMissed}
+        handleClick={handleClick}
         isHit={isHit}
-        handleClick={this.handleClick}
+        isMissed={isMissed}
       />
     );
   }

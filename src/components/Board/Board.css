@@ -1,4 +1,4 @@
-.Board {
+.BoardComponent {
   padding: 0 1.5em;
   display: flex;
   flex-flow: column nowrap;
@@ -6,15 +6,41 @@
   align-items: center;
 }
 
-.Board-row {
+.Board {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .Board-row-cell {
   width: 2em;
   height: 2em;
   background-color: #fff;
+  border: 1px solid #e5e5e5;
+  cursor: pointer;
+}
+
+.Board-row-cell_highlighted {
+  width: 2em;
+  height: 2em;
+  background-color: #42d8e8;
+  border: 1px solid #e5e5e5;
+  cursor: pointer;
+}
+
+.Board-row-cell_hit {
+  width: 2em;
+  height: 2em;
+  background-color: #00e871;
+  border: 1px solid #e5e5e5;
+  cursor: pointer;
+}
+
+.Board-row-cell_missed {
+  width: 2em;
+  height: 2em;
+  background-color: #e85a5f;
   border: 1px solid #e5e5e5;
   cursor: pointer;
 }
