@@ -1,44 +1,176 @@
 import React from "react";
 import Board from "./Board";
+import Cell from "../Cell/";
 
 import "./Board.css";
 
-class BoardContainer extends React.Component {
-  state = {};
+class BoardContainer extends React.PureComponent {
+  state = {
+    fieldArr: [],
+    // selectedId: {},
+    wasSelected: {},
+    notSelectedIds: [],
+    // isPlayerTurn: false,
+  };
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.isStarted !== this.props.isStarted) {
+      return this.props.isStarted ? this.generateBoard() : null;
+    }
+  }
+
+  generateBoard = () => {
+    const { field } = this.props.gameSettings;
+    const fieldArr = [];
+    const notSelectedIds = [];
+
+    for (let i = 0; i < field; i++) {
+      fieldArr.push([]);
+      for (let j = 0; j < field; j++) {
+        fieldArr[i][j] = {
+          row: i,
+          column: j,
+          isClicked: false,
+          isHighlighted: false,
+          isMissed: false,
+          isHit: false,
+        };
+        notSelectedIds.push({ row: i, column: j });
+      }
+    }
+
+    this.setState({ fieldArr, notSelectedIds }, () => {
+      console.log(this.state.notSelectedIds);
+      this.makeTurn();
+      this.renderBoard();
+    });
+
+    this.renderBoard();
+
+    return fieldArr;
+  };
 
   renderBoard = () => {
-    const { gameSettings } = this.props;
-    const { field, delay } = gameSettings;
-    // const rowArr = new Array(field);
-    // const fieldArr = new Array(field);
-    const fieldArr = [];
-    for (let i = 0; i < field; i++) {
-      const rowArr = [];
-      for (let j = 0; j < field; j++) {
-        console.log(i, j);
-        const id = i.toString(10) + j.toString(10);
-        console.log("id", id);
-        const el = <div className="Board-row-cell" key={id} id={id}></div>;
-        rowArr.push(el);
-        console.log("rowArr", rowArr);
-      }
-      const arrangedRow = (
-        <div className="Board-row" key={i} id={i}>
-          {rowArr.map(el => el)}
-        </div>
-      );
-      fieldArr.push(arrangedRow);
-      console.log("fieldArr", fieldArr);
+    const field = this.state.fieldArr;
+
+    return field.map(fieldrow => {
+      return fieldrow.map(fieldcell => {
+        const { row, column } = fieldcell;
+        return (
+          <div key={row + column}>
+            <Cell
+              handleClick={() => {
+                this.handleClick(row, column);
+              }}
+              fieldcell={fieldcell}
+            />
+          </div>
+        );
+      });
+    });
+  };
+
+  checkShot = (row, column) => {
+    const field = this.state.fieldArr;
+    if (field[row][column].isClicked === field[row][column].isHighlighted) {
+      field[row][column].isMissed = false;
+      field[row][column].isHit = true;
+      field[row][column].isHighlighted = false;
+    } else if (
+      field[row][column].isHighlighted === true &&
+      field[row][column].isClicked === false
+    ) {
+      field[row][column].isMissed = false;
+      field[row][column].isHighlighted = false;
+      field[row][column].isMissed = true;
     }
-    return fieldArr.map(el => el);
+
+    this.setState(
+      {
+        fieldArr: field,
+      },
+      () => {
+        this.checkGameStatus();
+        this.makeTurn();
+      }
+    );
+  };
+
+  checkGameStatus = () => {
+    const { startGame } = this.props;
+    const { fieldArr, notSelectedIds } = this.state;
+    const fieldLength =
+      this.props.gameSettings.field * this.props.gameSettings.field;
+    if (notSelectedIds.length < fieldLength / 2) {
+      startGame(false);
+    }
+  };
+
+  handleClick = (row, column) => {
+    const field = this.state.fieldArr;
+    field[row][column].isClicked = true;
+
+    this.setState(
+      {
+        fieldArr: field,
+      },
+      () => this.checkShot(row, column)
+    );
+  };
+
+  makeTurn = () => {
+    const { row, column } = this.generateRandomId();
+    const { delay } = this.props.gameSettings;
+    const field = this.state.fieldArr;
+    field[row][column].isHighlighted = true;
+
+    this.setState(
+      {
+        fieldArr: field,
+      },
+      () => {
+        setTimeout(() => {
+          this.checkShot(row, column);
+        }, delay);
+      }
+    );
+  };
+
+  calculateRowWidth = field => {
+    const rowWidth = 2 * field + 2;
+    return { width: rowWidth + "em" };
+  };
+
+  generateRandomId = () => {
+    const notSelectedIds = this.state.notSelectedIds;
+    console.log(notSelectedIds);
+    const randomNumber =
+      Math.floor(Math.random() * (notSelectedIds.length - 0)) + 0;
+    const randomId = notSelectedIds.splice(randomNumber, 1);
+    const { row, column } = randomId[0];
+
+    this.setState(
+      {
+        wasSelected: { row, column },
+      },
+      () => console.log("generaterandomid", this.state.wasSelected)
+    );
+    return { row, column };
   };
 
   render() {
     const { isStarted } = this.props;
+    const { field } = this.props.gameSettings;
+
     if (!isStarted) {
       return <div className="WelcomeScreen">The game is about to start</div>;
     }
-    return <Board renderBoard={this.renderBoard} />;
+    return (
+      <Board
+        rowWidth={this.calculateRowWidth(field)}
+        renderBoard={this.renderBoard}
+      />
+    );
   }
 }
 

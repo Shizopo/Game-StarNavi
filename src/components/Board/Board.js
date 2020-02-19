@@ -1,11 +1,13 @@
 import React from "react";
 
 const Board = props => {
-  const { renderBoard } = props;
+  const { renderBoard, rowWidth } = props;
   return (
-    <div className="Board">
+    <div className="BoardComponent">
       <p>Some Board text</p>
-      {renderBoard()}
+      <div className="Board" style={rowWidth}>
+        {renderBoard()}
+      </div>
     </div>
   );
 };
