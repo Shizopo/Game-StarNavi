@@ -8,7 +8,6 @@ const Controls = props => {
     userName,
     startGame,
   } = props;
-  console.log(renderGameModes, onInputChange, currentGameMode);
   return (
     <div className="Controls">
       <select
@@ -34,7 +33,7 @@ const Controls = props => {
         name="playButton"
         type="button"
         disabled={!currentGameMode ? true : false}
-        onClick={() => startGame()}
+        onClick={() => startGame(true)}
       >
         Play
       </button>

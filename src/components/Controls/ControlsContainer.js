@@ -29,7 +29,6 @@ class ControlsContainer extends React.Component {
   renderGameModes = () => {
     const { gameModes } = this.state;
     const gameModesArray = Object.keys(gameModes);
-    console.log(gameModesArray);
     return gameModesArray.map((el, index) => (
       <option value={el} key={index + 1}>
         {el}

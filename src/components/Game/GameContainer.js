@@ -27,8 +27,8 @@ class GameContainer extends React.Component {
     return;
   };
 
-  startGame = () => {
-    this.setState({ isStarted: true }, () =>
+  startGame = bool => {
+    this.setState({ isStarted: bool }, () =>
       console.log(
         "The game is just started with ",
         this.state.currentGameMode,

@@ -26,6 +26,7 @@ const Game = props => {
         // currentGameMode={currentGameMode}
         gameSettings={gameSettings}
         userName={userName}
+        startGame={startGame}
         isStarted={isStarted}
       />
     </div>
