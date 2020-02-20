@@ -1,5 +1,6 @@
 .Game {
-  height: 100%;
+  min-height: 100%;
+  max-height: fit-content;
   padding: 0;
   display: flex;
   /* flex: 1; */

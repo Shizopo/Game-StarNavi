@@ -12,4 +12,6 @@ const Board = props => {
   );
 };
 
+Board.whyDidYouRender = true;
+
 export default Board;

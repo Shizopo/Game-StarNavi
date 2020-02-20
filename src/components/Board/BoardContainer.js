@@ -7,10 +7,8 @@ import "./Board.css";
 class BoardContainer extends React.PureComponent {
   state = {
     fieldArr: [],
-    // selectedId: {},
     wasSelected: {},
     notSelectedIds: [],
-    // isPlayerTurn: false,
   };
 
   componentDidUpdate(prevProps) {
@@ -40,7 +38,6 @@ class BoardContainer extends React.PureComponent {
     }
 
     this.setState({ fieldArr, notSelectedIds }, () => {
-      console.log(this.state.notSelectedIds);
       this.makeTurn();
       this.renderBoard();
     });
@@ -98,7 +95,7 @@ class BoardContainer extends React.PureComponent {
 
   checkGameStatus = () => {
     const { startGame } = this.props;
-    const { fieldArr, notSelectedIds } = this.state;
+    const { notSelectedIds } = this.state;
     const fieldLength =
       this.props.gameSettings.field * this.props.gameSettings.field;
     if (notSelectedIds.length < fieldLength / 2) {
@@ -110,12 +107,9 @@ class BoardContainer extends React.PureComponent {
     const field = this.state.fieldArr;
     field[row][column].isClicked = true;
 
-    this.setState(
-      {
-        fieldArr: field,
-      },
-      () => this.checkShot(row, column)
-    );
+    this.setState({
+      fieldArr: field,
+    });
   };
 
   makeTurn = () => {
@@ -143,34 +137,26 @@ class BoardContainer extends React.PureComponent {
 
   generateRandomId = () => {
     const notSelectedIds = this.state.notSelectedIds;
-    console.log(notSelectedIds);
     const randomNumber =
       Math.floor(Math.random() * (notSelectedIds.length - 0)) + 0;
     const randomId = notSelectedIds.splice(randomNumber, 1);
     const { row, column } = randomId[0];
 
-    this.setState(
-      {
-        wasSelected: { row, column },
-      },
-      () => console.log("generaterandomid", this.state.wasSelected)
-    );
+    this.setState({
+      wasSelected: { row, column },
+    });
     return { row, column };
   };
 
   render() {
     const { isStarted } = this.props;
     const { field } = this.props.gameSettings;
+    const rowWidth = this.calculateRowWidth(field);
 
     if (!isStarted) {
       return <div className="WelcomeScreen">The game is about to start</div>;
     }
-    return (
-      <Board
-        rowWidth={this.calculateRowWidth(field)}
-        renderBoard={this.renderBoard}
-      />
-    );
+    return <Board renderBoard={this.renderBoard} rowWidth={rowWidth} />;
   }
 }
 
