@@ -6,7 +6,7 @@ const Controls = props => {
     onInputChange,
     currentGameMode,
     userName,
-    startGame,
+    onGameStatusGhange,
   } = props;
   return (
     <div className="Controls">
@@ -33,7 +33,7 @@ const Controls = props => {
         name="playButton"
         type="button"
         disabled={!currentGameMode ? true : false}
-        onClick={() => startGame(true)}
+        onClick={() => onGameStatusGhange({ isStarted: true, isEnded: false })}
       >
         Play
       </button>

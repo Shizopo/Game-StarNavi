@@ -4,11 +4,13 @@ import Cell from "../Cell/";
 
 import "./Board.css";
 
-class BoardContainer extends React.PureComponent {
+class BoardContainer extends React.Component {
   state = {
     fieldArr: [],
     wasSelected: {},
     notSelectedIds: [],
+    botScore: 0,
+    userScore: 0,
   };
 
   componentDidUpdate(prevProps) {
@@ -18,6 +20,9 @@ class BoardContainer extends React.PureComponent {
   }
 
   generateBoard = () => {
+    if (this.props.isEnded) {
+      return;
+    }
     const { field } = this.props.gameSettings;
     const fieldArr = [];
     const notSelectedIds = [];
@@ -39,17 +44,15 @@ class BoardContainer extends React.PureComponent {
 
     this.setState({ fieldArr, notSelectedIds }, () => {
       this.makeTurn();
-      this.renderBoard();
     });
-
-    this.renderBoard();
 
     return fieldArr;
   };
 
   renderBoard = () => {
+    const { isEnded } = this.props;
+    const { botScore, userScore } = this.state;
     const field = this.state.fieldArr;
-
     return field.map(fieldrow => {
       return fieldrow.map(fieldcell => {
         const { row, column } = fieldcell;
@@ -67,12 +70,14 @@ class BoardContainer extends React.PureComponent {
     });
   };
 
-  checkShot = (row, column) => {
+  checkCell = (row, column) => {
     const field = this.state.fieldArr;
+    let { botScore, userScore } = this.state;
     if (field[row][column].isClicked === field[row][column].isHighlighted) {
       field[row][column].isMissed = false;
       field[row][column].isHit = true;
       field[row][column].isHighlighted = false;
+      ++userScore;
     } else if (
       field[row][column].isHighlighted === true &&
       field[row][column].isClicked === false
@@ -80,26 +85,32 @@ class BoardContainer extends React.PureComponent {
       field[row][column].isMissed = false;
       field[row][column].isHighlighted = false;
       field[row][column].isMissed = true;
+      ++botScore;
     }
 
     this.setState(
       {
         fieldArr: field,
+        botScore,
+        userScore,
       },
       () => {
-        this.checkGameStatus();
         this.makeTurn();
+        this.checkGameStatus();
       }
     );
   };
 
   checkGameStatus = () => {
-    const { startGame } = this.props;
-    const { notSelectedIds } = this.state;
+    let { onGameStatusGhange, isStarted, isEnded } = this.props;
+    const { notSelectedIds, botScore, userScore } = this.state;
     const fieldLength =
       this.props.gameSettings.field * this.props.gameSettings.field;
-    if (notSelectedIds.length < fieldLength / 2) {
-      startGame(false);
+
+    if (botScore >= fieldLength / 2 || userScore >= fieldLength / 2) {
+      isEnded = true;
+      isStarted = false;
+      onGameStatusGhange({ isStarted, isEnded });
     }
   };
 
@@ -113,8 +124,12 @@ class BoardContainer extends React.PureComponent {
   };
 
   makeTurn = () => {
+    if (this.props.isEnded) {
+      return;
+    }
     const { row, column } = this.generateRandomId();
     const { delay } = this.props.gameSettings;
+    // const delay = 500;
     const field = this.state.fieldArr;
     field[row][column].isHighlighted = true;
 
@@ -122,9 +137,10 @@ class BoardContainer extends React.PureComponent {
       {
         fieldArr: field,
       },
+
       () => {
         setTimeout(() => {
-          this.checkShot(row, column);
+          this.checkCell(row, column);
         }, delay);
       }
     );
@@ -148,15 +164,30 @@ class BoardContainer extends React.PureComponent {
     return { row, column };
   };
 
+  renderScore = () => {
+    const userName = this.props.userName ? this.props.userName : "Player";
+    const { isEnded } = this.props;
+    const { botScore, userScore } = this.state;
+    if (isEnded) {
+      return `${userScore > botScore ? "User" : "Bot"} wins`;
+    }
+    return `${userName}: ${userScore} / Bot: ${botScore}`;
+  };
+
   render() {
-    const { isStarted } = this.props;
+    const { isStarted, isEnded } = this.props;
     const { field } = this.props.gameSettings;
     const rowWidth = this.calculateRowWidth(field);
 
-    if (!isStarted) {
-      return <div className="WelcomeScreen">The game is about to start</div>;
-    }
-    return <Board renderBoard={this.renderBoard} rowWidth={rowWidth} />;
+    return (
+      <Board
+        renderScore={this.renderScore}
+        renderBoard={this.renderBoard}
+        rowWidth={rowWidth}
+        isStarted={isStarted}
+        isEnded={isEnded}
+      />
+    );
   }
 }
 

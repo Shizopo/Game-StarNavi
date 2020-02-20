@@ -9,7 +9,7 @@ class GameContainer extends React.Component {
     userName: "",
     gameSettings: {},
     isStarted: false,
-    isCompTurn: false,
+    isEnded: false,
   };
 
   onInputChange = e => {
@@ -27,22 +27,35 @@ class GameContainer extends React.Component {
     return;
   };
 
-  startGame = bool => {
-    this.setState({ isStarted: bool }, () =>
-      console.log(
-        "The game is just started with ",
-        this.state.currentGameMode,
-        ", that means field size of ",
-        this.state.gameSettings.field,
-        " and ",
-        this.state.gameSettings.delay,
-        " delay."
-      )
-    );
+  onGameStatusGhange = status => {
+    const { isStarted, isEnded } = status;
+    if (isStarted && !isEnded) {
+      this.setState({ isStarted: true }, () =>
+        console.log(
+          "The game is just started with ",
+          this.state.currentGameMode,
+          ", that means field size of ",
+          this.state.gameSettings.field,
+          " and ",
+          this.state.gameSettings.delay,
+          " delay."
+        )
+      );
+    } else if (isEnded) {
+      this.setState({ isStarted: false, isEnded: true }, () =>
+        console.log("Game over")
+      );
+    }
   };
 
   render() {
-    const { currentGameMode, userName, gameSettings, isStarted } = this.state;
+    const {
+      currentGameMode,
+      userName,
+      gameSettings,
+      isStarted,
+      isEnded,
+    } = this.state;
     return (
       <Game
         onInputChange={this.onInputChange}
@@ -50,8 +63,9 @@ class GameContainer extends React.Component {
         getSettings={this.getSettings}
         gameSettings={gameSettings}
         userName={userName}
-        startGame={this.startGame}
+        onGameStatusGhange={this.onGameStatusGhange}
         isStarted={isStarted}
+        isEnded={isEnded}
       />
     );
   }

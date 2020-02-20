@@ -9,8 +9,9 @@ const Game = props => {
     userName,
     getSettings,
     gameSettings,
-    startGame,
+    onGameStatusGhange,
     isStarted,
+    isEnded,
   } = props;
 
   return (
@@ -20,14 +21,16 @@ const Game = props => {
         currentGameMode={currentGameMode}
         getSettings={getSettings}
         userName={userName}
-        startGame={startGame}
+        onGameStatusGhange={onGameStatusGhange}
+        isStarted={isStarted}
+        isEnded={isEnded}
       />
       <Board
-        // currentGameMode={currentGameMode}
         gameSettings={gameSettings}
         userName={userName}
-        startGame={startGame}
+        onGameStatusGhange={onGameStatusGhange}
         isStarted={isStarted}
+        isEnded={isEnded}
       />
     </div>
   );

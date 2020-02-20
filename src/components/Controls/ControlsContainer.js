@@ -38,7 +38,12 @@ class ControlsContainer extends React.Component {
 
   render() {
     const { isLoading } = this.state;
-    const { onInputChange, currentGameMode, userName, startGame } = this.props;
+    const {
+      onInputChange,
+      currentGameMode,
+      userName,
+      onGameStatusGhange,
+    } = this.props;
     if (isLoading) {
       return <div>Loading...</div>;
     }
@@ -48,7 +53,7 @@ class ControlsContainer extends React.Component {
         onInputChange={onInputChange}
         currentGameMode={currentGameMode}
         userName={userName}
-        startGame={startGame}
+        onGameStatusGhange={onGameStatusGhange}
       />
     );
   }
