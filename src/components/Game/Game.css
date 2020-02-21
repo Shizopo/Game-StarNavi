@@ -1,11 +1,9 @@
 .Game {
   min-height: 100%;
   max-height: fit-content;
-  padding: 0;
+  padding: 1.5em 0;
   display: flex;
-  /* flex: 1; */
   flex-flow: column nowrap;
-  align-self: flex-start;
-  /* justify-content: center; */
+  align-self: stretch;
   border: 2px solid #e9e9ec;
 }

@@ -12,24 +12,27 @@ const Controls = props => {
   } = props;
   return (
     <div className="Controls">
-      <select
-        name="currentGameMode"
-        onChange={onInputChange}
-        value={currentGameMode}
-        className="Controls-input Controls-input_gameMode"
-        disabled={isStarted}
-      >
-        <option value="" disabled hidden>
-          Pick game mode
-        </option>
-        {renderGameModes()}
-      </select>
+      <div className="Controls-selectWrapper">
+        <select
+          name="currentGameMode"
+          onChange={onInputChange}
+          value={currentGameMode}
+          className="Controls-input Controls-input_gameMode"
+          disabled={isStarted}
+        >
+          <option value="" disabled hidden>
+            Pick game mode
+          </option>
+          {renderGameModes()}
+        </select>
+      </div>
       <input
         name="userName"
         type="text"
         className="Controls-input Controls-input_nameInput"
         onChange={e => onInputChange(e)}
         value={userName}
+        placeholder="Player"
         disabled={isStarted}
       />
       {!isEnded ? (

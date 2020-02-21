@@ -1,21 +1,25 @@
 .Leaderboard {
-  height: 100%;
-  padding: 0 2em;
+  min-height: 100%;
+  max-height: fit-content;
+  max-width: 50vh;
+  padding: 1.45em;
   min-width: 25em;
   display: flex;
-  /* flex: 1; */
   flex-flow: column nowrap;
-  justify-content: center;
+  justify-content: flex-start;
   border: 2px solid #e9e9ec;
 }
 
 .Leaderboard-heading {
+  margin: 0;
+  padding-top: 1em;
   color: #888888;
   font-weight: 400;
 }
 
 .Leaderboard-list {
-  padding: 0;
+  margin: 0;
+  padding: 3em 0;
   list-style: none;
 }
 

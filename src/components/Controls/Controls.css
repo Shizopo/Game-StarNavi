@@ -1,5 +1,5 @@
 .Controls {
-  padding: 2em 1em;
+  padding: 2em 1em 1em 1em;
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
@@ -19,23 +19,31 @@
   font-weight: 600;
 }
 
+.Controls-selectWrapper {
+  padding: 0;
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  border-radius: 3px;
+}
+
+.Controls-selectWrapper:after {
+  content: "▼";
+  position: absolute;
+  right: 0.9em;
+  top: 0.55em;
+  z-index: 1;
+  text-align: center;
+  color: #7b8d93;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .Controls-input_gameMode {
   min-width: 11em;
   max-width: 14em;
   background-color: #cfd8dc;
 }
-
-/* .Controls-input_gameMode::after {
-  content: "";
-  top: 2em;
-  position: absolute;
-  border: solid black;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-} */
 
 .Controls-input_nameInput {
   max-width: 6em;
@@ -43,6 +51,7 @@
 }
 
 .Controls-input_playButton {
+  min-width: 9em;
   padding: 1em;
   background-color: #7b8d93;
   color: #fff;

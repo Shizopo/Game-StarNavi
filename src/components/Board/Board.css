@@ -11,6 +11,7 @@
 }
 
 .GameScore {
+  padding-bottom: 1em;
   display: flex;
   font-weight: 600;
 }
