@@ -1,6 +1,6 @@
 import React from "react";
 import Controls from "./Controls";
-import fetchLeaderboard from "../../utils/dataFetchService";
+import fetchService from "../../utils/dataFetchService";
 
 import "./Controls.css";
 
@@ -12,7 +12,7 @@ class ControlsContainer extends React.Component {
 
   async componentDidMount() {
     const endpoint = "game-settings";
-    const gameModes = await fetchLeaderboard(endpoint);
+    const gameModes = await fetchService(endpoint);
     this.setState({ gameModes, isLoading: false });
   }
 
@@ -43,6 +43,8 @@ class ControlsContainer extends React.Component {
       currentGameMode,
       userName,
       onGameStatusGhange,
+      isStarted,
+      isEnded,
     } = this.props;
     if (isLoading) {
       return <div>Loading...</div>;
@@ -54,6 +56,8 @@ class ControlsContainer extends React.Component {
         currentGameMode={currentGameMode}
         userName={userName}
         onGameStatusGhange={onGameStatusGhange}
+        isStarted={isStarted}
+        isEnded={isEnded}
       />
     );
   }

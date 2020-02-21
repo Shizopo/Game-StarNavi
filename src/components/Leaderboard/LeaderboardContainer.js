@@ -1,10 +1,10 @@
 import React from "react";
 import Leaderboard from "./Leaderboard";
-import fetchLeaderboard from "../../utils/dataFetchService";
+import fetchService from "../../utils/dataFetchService";
 
 import "./Leaderboard.css";
 
-class LeaderboardContainer extends React.Component {
+class LeaderboardContainer extends React.PureComponent {
   state = {
     leaderboard: [],
     isLoading: true,
@@ -12,8 +12,16 @@ class LeaderboardContainer extends React.Component {
 
   async componentDidMount() {
     const endpoint = "winners";
-    const leaderboard = await fetchLeaderboard(endpoint);
+    const leaderboard = await fetchService(endpoint);
     this.setState({ leaderboard, isLoading: false });
+  }
+
+  async componentDidUpdate(prevProps) {
+    if (prevProps.isWinnerPosted !== this.props.isWinnerPosted) {
+      const endpoint = "winners";
+      const leaderboard = await fetchService(endpoint);
+      this.setState({ leaderboard, isLoading: false });
+    }
   }
 
   renderList = () => {

@@ -4,13 +4,23 @@ import Game from "../Game";
 
 import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <Game />
-      <Leaderboard />
-    </div>
-  );
+class App extends React.PureComponent {
+  state = { isWinnerPosted: false };
+
+  updateLeaderboard = () => {
+    const { isWinnerPosted } = this.state;
+    this.setState({ isWinnerPosted: !isWinnerPosted });
+  };
+
+  render() {
+    const { isWinnerPosted } = this.state;
+    return (
+      <div className="App">
+        <Game updateLeaderboard={this.updateLeaderboard} />
+        <Leaderboard isWinnerPosted={isWinnerPosted} />
+      </div>
+    );
+  }
 }
 
 export default App;

@@ -2,11 +2,7 @@ import React from "react";
 import Cell from "./Cell";
 
 class CellContainer extends React.PureComponent {
-  state = {
-    // isClicked: false,
-    isMissed: false,
-    isHit: false,
-  };
+  state = {};
 
   render() {
     const {

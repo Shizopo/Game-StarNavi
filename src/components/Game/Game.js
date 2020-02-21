@@ -12,6 +12,8 @@ const Game = props => {
     onGameStatusGhange,
     isStarted,
     isEnded,
+    isNew,
+    updateLeaderboard,
   } = props;
 
   return (
@@ -31,6 +33,8 @@ const Game = props => {
         onGameStatusGhange={onGameStatusGhange}
         isStarted={isStarted}
         isEnded={isEnded}
+        isNew={isNew}
+        updateLeaderboard={updateLeaderboard}
       />
     </div>
   );

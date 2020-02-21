@@ -7,6 +7,8 @@ const Controls = props => {
     currentGameMode,
     userName,
     onGameStatusGhange,
+    isStarted,
+    isEnded,
   } = props;
   return (
     <div className="Controls">
@@ -15,6 +17,7 @@ const Controls = props => {
         onChange={onInputChange}
         value={currentGameMode}
         className="Controls-input Controls-input_gameMode"
+        disabled={isStarted}
       >
         <option value="" disabled hidden>
           Pick game mode
@@ -27,16 +30,41 @@ const Controls = props => {
         className="Controls-input Controls-input_nameInput"
         onChange={e => onInputChange(e)}
         value={userName}
+        disabled={isStarted}
       />
-      <button
-        className="Controls-input Controls-input_playButton"
-        name="playButton"
-        type="button"
-        disabled={!currentGameMode ? true : false}
-        onClick={() => onGameStatusGhange({ isStarted: true, isEnded: false })}
-      >
-        Play
-      </button>
+      {!isEnded ? (
+        <button
+          className="Controls-input Controls-input_playButton"
+          name="playButton"
+          type="button"
+          disabled={isStarted}
+          onClick={() =>
+            onGameStatusGhange({
+              isStarted: true,
+              isEnded: false,
+              isNewGame: false,
+            })
+          }
+        >
+          Play
+        </button>
+      ) : (
+        <button
+          className="Controls-input Controls-input_playButton"
+          name="playButton"
+          type="button"
+          disabled={isStarted}
+          onClick={() =>
+            onGameStatusGhange({
+              isStarted: true,
+              isEnded: false,
+              isNewGame: true,
+            })
+          }
+        >
+          Play again
+        </button>
+      )}
     </div>
   );
 };

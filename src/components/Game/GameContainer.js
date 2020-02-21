@@ -3,19 +3,19 @@ import Game from "./Game";
 
 import "./Game.css";
 
-class GameContainer extends React.Component {
+class GameContainer extends React.PureComponent {
   state = {
     currentGameMode: "",
     userName: "",
     gameSettings: {},
     isStarted: false,
     isEnded: false,
+    isNewGame: false,
   };
 
   onInputChange = e => {
     e.preventDefault();
     const { name, value } = e.target;
-    console.log(name, value, this.state);
     this.setState({ [name]: value });
   };
 
@@ -29,8 +29,9 @@ class GameContainer extends React.Component {
 
   onGameStatusGhange = status => {
     const { isStarted, isEnded } = status;
+    let isNewGame = status.isNewGame ? status.isNewGame : false;
     if (isStarted && !isEnded) {
-      this.setState({ isStarted: true }, () =>
+      this.setState({ isStarted: true, isEnded: false, isNewGame: true }, () =>
         console.log(
           "The game is just started with ",
           this.state.currentGameMode,
@@ -41,20 +42,20 @@ class GameContainer extends React.Component {
           " delay."
         )
       );
-    } else if (isEnded) {
-      this.setState({ isStarted: false, isEnded: true }, () =>
-        console.log("Game over")
-      );
+    } else if (isEnded && !isNewGame) {
+      this.setState({ isStarted: false, isEnded: true });
     }
   };
 
   render() {
+    const { updateLeaderboard } = this.props;
     const {
       currentGameMode,
       userName,
       gameSettings,
       isStarted,
       isEnded,
+      isNewGame,
     } = this.state;
     return (
       <Game
@@ -66,6 +67,8 @@ class GameContainer extends React.Component {
         onGameStatusGhange={this.onGameStatusGhange}
         isStarted={isStarted}
         isEnded={isEnded}
+        isNew={isNewGame}
+        updateLeaderboard={updateLeaderboard}
       />
     );
   }

@@ -1,28 +1,46 @@
 import React from "react";
 import Board from "./Board";
 import Cell from "../Cell/";
+import postService from "../../utils/dataPostService";
 
 import "./Board.css";
 
-class BoardContainer extends React.Component {
+class BoardContainer extends React.PureComponent {
   state = {
     fieldArr: [],
     wasSelected: {},
     notSelectedIds: [],
     botScore: 0,
     userScore: 0,
+    lastWinner: "",
   };
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps.isStarted !== this.props.isStarted) {
-      return this.props.isStarted ? this.generateBoard() : null;
+      this.generateBoard();
+    }
+    if (prevProps.isEnded !== this.props.isEnded && !this.props.isEnded) {
+      this.startNewGame();
+    }
+    if (
+      prevState.lastWinner !== this.state.lastWinner &&
+      this.state.lastWinner.length > 0
+    ) {
+      this.sendWinnerData(this.state.lastWinner);
     }
   }
 
+  startNewGame = () => {
+    this.setState({
+      wasSelected: {},
+      botScore: 0,
+      userScore: 0,
+      lastWinner: "",
+    });
+    return true;
+  };
+
   generateBoard = () => {
-    if (this.props.isEnded) {
-      return;
-    }
     const { field } = this.props.gameSettings;
     const fieldArr = [];
     const notSelectedIds = [];
@@ -42,16 +60,20 @@ class BoardContainer extends React.Component {
       }
     }
 
-    this.setState({ fieldArr, notSelectedIds }, () => {
-      this.makeTurn();
-    });
+    this.setState(
+      {
+        fieldArr,
+        notSelectedIds,
+      },
+      () => {
+        this.makeTurn();
+      }
+    );
 
     return fieldArr;
   };
 
   renderBoard = () => {
-    const { isEnded } = this.props;
-    const { botScore, userScore } = this.state;
     const field = this.state.fieldArr;
     return field.map(fieldrow => {
       return fieldrow.map(fieldcell => {
@@ -95,7 +117,6 @@ class BoardContainer extends React.Component {
         userScore,
       },
       () => {
-        this.makeTurn();
         this.checkGameStatus();
       }
     );
@@ -103,7 +124,7 @@ class BoardContainer extends React.Component {
 
   checkGameStatus = () => {
     let { onGameStatusGhange, isStarted, isEnded } = this.props;
-    const { notSelectedIds, botScore, userScore } = this.state;
+    const { botScore, userScore } = this.state;
     const fieldLength =
       this.props.gameSettings.field * this.props.gameSettings.field;
 
@@ -112,6 +133,7 @@ class BoardContainer extends React.Component {
       isStarted = false;
       onGameStatusGhange({ isStarted, isEnded });
     }
+    this.makeTurn();
   };
 
   handleClick = (row, column) => {
@@ -168,10 +190,38 @@ class BoardContainer extends React.Component {
     const userName = this.props.userName ? this.props.userName : "Player";
     const { isEnded } = this.props;
     const { botScore, userScore } = this.state;
+    let winner;
     if (isEnded) {
-      return `${userScore > botScore ? "User" : "Bot"} wins`;
+      winner = this.checkWinner(userName);
+      return `${winner} wins`;
     }
     return `${userName}: ${userScore} / Bot: ${botScore}`;
+  };
+
+  checkWinner = userName => {
+    const winner =
+      this.state.userScore > this.state.botScore ? userName : "Bot";
+    this.setState({ lastWinner: winner });
+    return winner;
+  };
+
+  sendWinnerData = async winner => {
+    const { updateLeaderboard } = this.props;
+    const date = new Date();
+    const parsedDate = `${date.toDateString()} ${date.getHours()}:${date.getMinutes()}`;
+    const requestBody = { winner: winner, date: parsedDate };
+    const request = {
+      endpoint: "winners",
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const leaderboard = await postService(request);
+    updateLeaderboard();
+    return leaderboard;
   };
 
   render() {
