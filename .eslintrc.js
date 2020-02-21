@@ -23,6 +23,7 @@ module.exports = {
   },
   plugins: ["react", "prettier"],
   rules: {
+    "react/prop-types": 0,
     semi: ["error", "always"],
     quotes: ["error", "double"],
     "prettier/prettier": ["error"],

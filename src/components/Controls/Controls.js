@@ -40,7 +40,7 @@ const Controls = props => {
           className="Controls-input Controls-input_playButton"
           name="playButton"
           type="button"
-          disabled={isStarted}
+          disabled={isStarted || !currentGameMode}
           onClick={() =>
             onGameStatusGhange({
               isStarted: true,
@@ -56,7 +56,7 @@ const Controls = props => {
           className="Controls-input Controls-input_playButton"
           name="playButton"
           type="button"
-          disabled={isStarted}
+          disabled={isStarted || !currentGameMode}
           onClick={() =>
             onGameStatusGhange({
               isStarted: true,
