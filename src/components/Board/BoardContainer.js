@@ -151,7 +151,6 @@ class BoardContainer extends React.PureComponent {
     }
     const { row, column } = this.generateRandomId();
     const { delay } = this.props.gameSettings;
-    // const delay = 500;
     const field = this.state.fieldArr;
     field[row][column].isHighlighted = true;
 

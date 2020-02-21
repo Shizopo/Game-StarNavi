@@ -28,10 +28,12 @@ class LeaderboardContainer extends React.PureComponent {
     const { leaderboard } = this.state;
     const lastFourItems = leaderboard.slice(-4);
     return lastFourItems.map(el => {
+      const date = new Date(el.date);
+      const parsedDate = `${date.toDateString()} ${date.getHours()}:${date.getMinutes()}`;
       return (
         <li className="Leaderboard-list-item" key={el.id}>
           <p>{el.winner}</p>
-          <p>{el.date}</p>
+          <p>{parsedDate}</p>
         </li>
       );
     });
